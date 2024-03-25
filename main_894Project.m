@@ -145,34 +145,55 @@ for i = 1:testcaseNumber
         fprintf("Testcase %d force-closure: NO.\n", i);
     end
 
+    grid on
+    hold off
     % Visualize the convex hull for forces and torques
-    fx = transpose(forces(:,1));
-    fy = transpose(forces(:,2));
-    fz = transpose(forces(:,3));
-    scatter3(fx,fy,fz,'filled');
+    % force:XY
+    [k,av] = convhull(forces(:,[1,2]));
+    plot(forces(:,1),forces(:,2),'*');
     grid on
-    xlabel('X');
-    ylabel('Y');
-    zlabel('Z');
-    view(0,90); % XY
+    hold on
+    plot(forces(k,1),forces(k,2));
     print(gcf,'-dpng',[['./OutputPlots/Force_XY_' num2str(i)] '.png']);
-    view(0,0); % XZ
-    print(gcf,'-dpng',[['./OutputPlots/Force_XZ_' num2str(i)] '.png']);
-    view(90,0); % YZ
-    print(gcf,'-dpng',[['./OutputPlots/Force_YZ_' num2str(i)] '.png']);
-    tx = transpose(forces(:,1));
-    ty = transpose(forces(:,2));
-    tz = transpose(forces(:,3));
-    scatter3(tx,ty,tz,'filled');
+    hold off
+    % force:XZ
+    [k,av] = convhull(forces(:,[1,3]));
+    plot(forces(:,1),forces(:,3),'*');
     grid on
-    xlabel('X');
-    ylabel('Y');
-    zlabel('Z');
-    view(0,90); % XY
+    hold on
+    plot(forces(k,1),forces(k,3));
+    print(gcf,'-dpng',[['./OutputPlots/Force_XZ_' num2str(i)] '.png']);
+    hold off
+    % force:YZ
+    [k,av] = convhull(forces(:,[2,3]));
+    plot(forces(:,2),forces(:,3),'*');
+    grid on
+    hold on
+    plot(forces(k,2),forces(k,3));
+    print(gcf,'-dpng',[['./OutputPlots/Force_YZ_' num2str(i)] '.png']);
+    hold off
+    % torque:XY
+    [k,av] = convhull(torques(:,[1,2]));
+    plot(torques(:,1),torques(:,2),'*');
+    grid on
+    hold on
+    plot(torques(k,1),torques(k,2));
     print(gcf,'-dpng',[['./OutputPlots/Torque_XY_' num2str(i)] '.png']);
-    view(0,0); % XZ
+    hold off
+    % force:XZ
+    [k,av] = convhull(torques(:,[1,3]));
+    plot(torques(:,1),torques(:,3),'*');
+    grid on
+    hold on
+    plot(torques(k,1),torques(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Torque_XZ_' num2str(i)] '.png']);
-    view(90,0); % YZ
+    hold off
+    % force:YZ
+    [k,av] = convhull(torques(:,[2,3]));
+    plot(torques(:,2),torques(:,3),'*');
+    grid on
+    hold on
+    plot(torques(k,2),torques(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Torque_YZ_' num2str(i)] '.png']);
     hold off
 end
