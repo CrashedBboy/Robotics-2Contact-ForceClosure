@@ -1,0 +1,37 @@
+Testcase number: 5
+FRICTION_CONE_APPROX: 32 --> Degrees between 2 neighboring friction cone boundaries: 1.125000e+01
+[TESTCASE 1]
+contact point 1 (C1): (0.0500,0.0000,0.0000)
+contact point 2 (C2): (-0.0500,0.0000,0.0000)
+contact point 1 (N1): (-1.0000,0.0000,0.0000)
+contact point 2 (N2): (1.0000,0.0000,0.0000)
+Friction coefficient: 0.600000
+Testcase 1 force-closure: YES.
+[TESTCASE 2]
+contact point 1 (C1): (0.0500,0.0000,0.0000)
+contact point 2 (C2): (-0.0500,0.0000,0.0000)
+contact point 1 (N1): (1.0000,0.0000,0.0000)
+contact point 2 (N2): (-1.0000,0.0000,0.0000)
+Friction coefficient: 0.600000
+Testcase 2 force-closure: YES.
+[TESTCASE 3]
+contact point 1 (C1): (0.0500,0.0000,0.0000)
+contact point 2 (C2): (-0.0500,0.0000,0.0000)
+contact point 1 (N1): (-1.0000,0.0000,0.0000)
+contact point 2 (N2): (0.0000,1.0000,0.0000)
+Friction coefficient: 0.600000
+Testcase 3 force-closure: NO.
+[TESTCASE 4]
+contact point 1 (C1): (0.0500,0.0000,0.0000)
+contact point 2 (C2): (0.0000,-0.0500,0.0000)
+contact point 1 (N1): (-1.0000,0.0000,0.0000)
+contact point 2 (N2): (0.0000,1.0000,0.0000)
+Friction coefficient: 0.600000
+Testcase 4 force-closure: NO.
+[TESTCASE 5]
+contact point 1 (C1): (0.0000,0.0100,0.0400)
+contact point 2 (C2): (0.0000,-0.0100,-0.0600)
+contact point 1 (N1): (0.0000,0.0000,-1.0000)
+contact point 2 (N2): (0.0000,0.0000,1.0000)
+Friction coefficient: 0.600000
+Testcase 5 force-closure: NO.

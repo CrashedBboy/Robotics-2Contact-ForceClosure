@@ -109,6 +109,7 @@ for i = 1:testcaseNumber
         torques(j+FRICTION_CONE_APPROX,:) = T;
     end
 
+
     % To avoid de-generate condition, we add a small epsilon to 0 col/row
     for row = 1:FRICTION_CONE_APPROX
         if forces(row,:)*0 == forces(row,:)
@@ -126,24 +127,33 @@ for i = 1:testcaseNumber
             torques(:,col) = -0.01 + (0.01+0.01)*rand(FRICTION_CONE_APPROX*2,1);
         end
     end
+    grasp_wrenches = [forces torques]; % grasp wrench space: N x 6 matrix
 
     % Now we have 2 contact * N vertex-per-friction-cone = 2*N wrenches. 
     % We can construct a convex hull using these 2*N points.
     % To determine if force-closure is satisfied,
     % we can simply see if the origin is located inside the hull.
-    origin = [0 0 0;];
-    f_tess = convhulln(forces, {'QJ'});
-    f_res = inhull(origin, forces, f_tess);
-    F_closure = f_res(1);
-    t_tess = convhulln(torques, {'QJ'});
-    t_res = inhull(origin, torques, t_tess);
-    T_closure = t_res(1);
-    force_closure = F_closure * T_closure;
-    if force_closure
+    origin = [0 0 0 0 0 0;];
+    tess = convhulln(grasp_wrenches, {'QJ'});
+    res = inhull(origin, grasp_wrenches, tess);
+    closure = res(1);
+    if closure
         fprintf("Testcase %d force-closure: YES.\n", i);
     else
         fprintf("Testcase %d force-closure: NO.\n", i);
     end
+    %f_tess = convhulln(forces, {'QJ'});
+    %f_res = inhull(origin, forces, f_tess);
+    %F_closure = f_res(1);
+    %t_tess = convhulln(torques, {'QJ'});
+    %t_res = inhull(origin, torques, t_tess);
+    %T_closure = t_res(1);
+    %force_closure = F_closure * T_closure;
+    %if force_closure
+    %    fprintf("Testcase %d force-closure: YES.\n", i);
+    %else
+    %    fprintf("Testcase %d force-closure: NO.\n", i);
+    %end
 
     grid on
     hold off
@@ -151,51 +161,80 @@ for i = 1:testcaseNumber
     % force:XY
     [k,av] = convhull(forces(:,[1,2]));
     plot(forces(:,1),forces(:,2),'*');
-    grid on
     hold on
+    grid on
     plot(forces(k,1),forces(k,2));
     print(gcf,'-dpng',[['./OutputPlots/Force_XY_' num2str(i)] '.png']);
     hold off
     % force:XZ
     [k,av] = convhull(forces(:,[1,3]));
     plot(forces(:,1),forces(:,3),'*');
-    grid on
     hold on
+    grid on
     plot(forces(k,1),forces(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Force_XZ_' num2str(i)] '.png']);
     hold off
     % force:YZ
     [k,av] = convhull(forces(:,[2,3]));
     plot(forces(:,2),forces(:,3),'*');
-    grid on
     hold on
+    grid on
     plot(forces(k,2),forces(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Force_YZ_' num2str(i)] '.png']);
     hold off
     % torque:XY
     [k,av] = convhull(torques(:,[1,2]));
     plot(torques(:,1),torques(:,2),'*');
-    grid on
     hold on
+    grid on
     plot(torques(k,1),torques(k,2));
     print(gcf,'-dpng',[['./OutputPlots/Torque_XY_' num2str(i)] '.png']);
     hold off
     % force:XZ
     [k,av] = convhull(torques(:,[1,3]));
     plot(torques(:,1),torques(:,3),'*');
-    grid on
     hold on
+    grid on
     plot(torques(k,1),torques(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Torque_XZ_' num2str(i)] '.png']);
     hold off
     % force:YZ
     [k,av] = convhull(torques(:,[2,3]));
     plot(torques(:,2),torques(:,3),'*');
-    grid on
     hold on
+    grid on
     plot(torques(k,2),torques(k,3));
     print(gcf,'-dpng',[['./OutputPlots/Torque_YZ_' num2str(i)] '.png']);
     hold off
+    % fx = transpose(forces(:,1));
+    % fy = transpose(forces(:,2));
+    % fz = transpose(forces(:,3));
+    % scatter3(fx,fy,fz,'filled');
+    
+    % xlabel('X');
+    % ylabel('Y');
+    % zlabel('Z');
+    % view(0,90); % XY
+    % print(gcf,'-dpng',[['./OutputPlots/Force_XY_' num2str(i)] '.png']);
+    % view(0,0); % XZ
+    % print(gcf,'-dpng',[['./OutputPlots/Force_XZ_' num2str(i)] '.png']);
+    % view(90,0); % YZ
+    % print(gcf,'-dpng',[['./OutputPlots/Force_YZ_' num2str(i)] '.png']);
+    % tx = transpose(forces(:,1));
+    % ty = transpose(forces(:,2));
+    % tz = transpose(forces(:,3));
+    % scatter3(tx,ty,tz,'filled');
+    % grid on
+    % xlabel('X');
+    % ylabel('Y');
+    % zlabel('Z');
+    % view(0,90); % XY
+    % print(gcf,'-dpng',[['./OutputPlots/Torque_XY_' num2str(i)] '.png']);
+    % view(0,0); % XZ
+    % print(gcf,'-dpng',[['./OutputPlots/Torque_XZ_' num2str(i)] '.png']);
+    % view(90,0); % YZ
+    % print(gcf,'-dpng',[['./OutputPlots/Torque_YZ_' num2str(i)] '.png']);
+    % hold off
 end
 
 
